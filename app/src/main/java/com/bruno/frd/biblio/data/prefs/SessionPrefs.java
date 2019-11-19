@@ -1,14 +1,14 @@
-package com.hermosaprogramacion.blog.saludmock.data.prefs;
+package  com.bruno.frd.biblio.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.hermosaprogramacion.blog.saludmock.data.api.model.Affiliate;
+import com.bruno.frd.biblio.data.api.model.Socio;
 
 /**
- * Manejador de preferencias de la sesión del afiliado
+ * Manejador de preferencias de la sesión del usuario
  */
 public class SessionPrefs {
 
@@ -43,14 +43,14 @@ public class SessionPrefs {
         return mIsLoggedIn;
     }
 
-    public void saveAffiliate(Affiliate affiliate) {
+    public void saveAffiliate(Socio affiliate) {
         if (affiliate != null) {
             SharedPreferences.Editor editor = mPrefs.edit();
             editor.clear();
             editor.putString(PREF_AFFILIATE_ID, affiliate.getId());
             editor.putString(PREF_AFFILIATE_NAME, affiliate.getName());
             editor.putString(PREF_AFFILIATE_EMAIL, affiliate.getEmail());
-            editor.putString(PREF_AFFILIATE_TOKEN, affiliate.getToken());
+            editor.putString(PREF_AFFILIATE_TOKEN, "Bearer " + affiliate.getToken());
             Log.d("tokenPrefInside", affiliate.getToken());
             editor.apply();
 

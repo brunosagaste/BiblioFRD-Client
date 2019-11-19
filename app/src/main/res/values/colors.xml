@@ -3,4 +3,6 @@
     <color name="colorPrimary">#76A6EF </color>
     <color name="colorPrimaryDark">#76A6EF </color>
     <color name="colorAccent">#98D743</color>
+    <color name="vencidaStatus">#82c784</color>
+    <color name="porvencerStatus">#e57373</color>
 </resources>

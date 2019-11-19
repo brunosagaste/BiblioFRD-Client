@@ -1,9 +1,9 @@
-package com.hermosaprogramacion.blog.saludmock.data.api.model;
+package com.bruno.frd.biblio.data.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Objeto plano Java para representar el cuerpo de la petición POST /affiliates/login
+ * Objeto plano Java para representar el cuerpo de la petición POST /public/login
  */
 public class LoginBody {
     @SerializedName("email")

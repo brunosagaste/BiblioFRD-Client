@@ -1,12 +1,10 @@
-package com.hermosaprogramacion.blog.saludmock.ui;
+package  com.bruno.frd.biblio.ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hermosaprogramacion.blog.saludmock.R;
-import com.hermosaprogramacion.blog.saludmock.data.api.SaludMockApi;
-import com.hermosaprogramacion.blog.saludmock.data.api.model.Affiliate;
-import com.hermosaprogramacion.blog.saludmock.data.api.model.ApiError;
-import com.hermosaprogramacion.blog.saludmock.data.api.model.LoginBody;
-import com.hermosaprogramacion.blog.saludmock.data.prefs.SessionPrefs;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bruno.frd.biblio.R;
+import com.bruno.frd.biblio.data.api.BiblioApi;
+import com.bruno.frd.biblio.data.api.model.Socio;
+import com.bruno.frd.biblio.data.api.model.ApiError;
+import com.bruno.frd.biblio.data.api.model.LoginBody;
+import com.bruno.frd.biblio.data.prefs.SessionPrefs;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 
@@ -35,12 +36,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Screen de login para afiliados.
+ * Screen de login para usuario.
  */
 public class LoginActivity extends AppCompatActivity {
 
     private Retrofit mRestAdapter;
-    private SaludMockApi mSaludMockApi;
+    private BiblioApi mSaludMockApi;
 
     // UI references.
     private ImageView mLogoView;
@@ -58,12 +59,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // Crear adaptador Retrofit
         mRestAdapter = new Retrofit.Builder()
-                .baseUrl(SaludMockApi.BASE_URL)
+                .baseUrl(BiblioApi.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        // Crear conexión a la API de SaludMock
-        mSaludMockApi = mRestAdapter.create(SaludMockApi.class);
+        // Crear conexión a la API de BiblioFRD
+        mSaludMockApi = mRestAdapter.create(BiblioApi.class);
 
         mLogoView = (ImageView) findViewById(R.id.image_logo);
         mUserIdView = (EditText) findViewById(R.id.user_id);
@@ -146,10 +147,10 @@ public class LoginActivity extends AppCompatActivity {
             // Mostrar el indicador de carga y luego iniciar la petición asíncrona.
             showProgress(true);
 
-            Call<Affiliate> loginCall = mSaludMockApi.login(new LoginBody(userId, password));
-            loginCall.enqueue(new Callback<Affiliate>() {
+            Call<Socio> loginCall = mSaludMockApi.login(new LoginBody(userId, password));
+            loginCall.enqueue(new Callback<Socio>() {
                 @Override
-                public void onResponse(Call<Affiliate> call, Response<Affiliate> response) {
+                public void onResponse(Call<Socio> call, Response<Socio> response) {
                     // Mostrar progreso
                     showProgress(false);
 
@@ -179,17 +180,17 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Guardar afiliado en preferencias
+                    // Guardar usuario en preferencias
                     SessionPrefs.get(LoginActivity.this).saveAffiliate(response.body());
                     Log.d("tokenResponse", response.body().getToken());
                     Log.d("tokenPref", SessionPrefs.get(LoginActivity.this).getToken());
 
-                    // Ir a libros
-                    showAppointmentsScreen();
+                    // Ir a préstamos
+                    showMainScreen();
                 }
 
                 @Override
-                public void onFailure(Call<Affiliate> call, Throwable t) {
+                public void onFailure(Call<Socio> call, Throwable t) {
                     showProgress(false);
                     showLoginError(t.getMessage());
                 }
@@ -213,8 +214,8 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView.setVisibility(visibility);
     }
 
-    private void showAppointmentsScreen() {
-        startActivity(new Intent(this, AppointmentsActivity.class));
+    private void showMainScreen() {
+        startActivity(new Intent(this,MainActivity.class));
         finish();
     }
 

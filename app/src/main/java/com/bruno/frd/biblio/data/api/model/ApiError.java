@@ -1,4 +1,4 @@
-package com.hermosaprogramacion.blog.saludmock.data.api.model;
+package  com.bruno.frd.biblio.data.api.model;
 
 import com.google.gson.Gson;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 import okhttp3.ResponseBody;
 
 /**
- * Creado por Hermosa Programación.
+ *
  */
 
 public class ApiError {

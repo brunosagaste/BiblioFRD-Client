@@ -1,9 +1,9 @@
-package com.hermosaprogramacion.blog.saludmock.data.api.model;
+package  com.bruno.frd.biblio.data.api.model;
 
 /**
- * Objeto plano Java para representar afiliados
+ * Objeto plano Java para representar usuarios
  */
-public class Affiliate {
+public class Socio {
 
     private String id;
     private String name;
@@ -11,7 +11,7 @@ public class Affiliate {
     private String gender;
     private String token;
 
-    public Affiliate(String id, String name, String email, String gender, String token) {
+    public Socio(String id, String name, String email, String gender, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
