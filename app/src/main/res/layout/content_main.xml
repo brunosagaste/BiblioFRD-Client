@@ -10,13 +10,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
-        android:id="@+id/content_appointments"
+        android:id="@+id/content_loans"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_appointments"
+            android:id="@+id/list_loans"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="8dp"

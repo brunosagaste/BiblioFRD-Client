@@ -10,7 +10,7 @@
 
     <!-- Indicador de estado -->
     <View
-        android:id="@+id/indicator_appointment_status"
+        android:id="@+id/indicator_status"
         android:layout_width="8dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
         android:paddingTop="8dp">
 
         <TextView
-            android:id="@+id/text_appointment_date"
+            android:id="@+id/text_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -42,52 +42,56 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_toEndOf="@+id/text_appointment_date"
-            android:layout_toRightOf="@+id/text_appointment_date"
+            android:layout_toEndOf="@+id/text_date"
+            android:layout_toRightOf="@+id/text_date"
             android:background="#E0E0E0" />
 
         <TextView
-            android:id="@+id/text_medical_service"
+            android:id="@+id/text_title"
             style="@style/Base.TextAppearance.AppCompat.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@+id/vertical_separator"
             android:layout_toRightOf="@+id/vertical_separator"
+            android:fontFamily="@font/roboto_light"
+            android:textSize="18dp"
             tools:text="Libro" />
 
         <TextView
-            android:id="@+id/text_doctor_name"
+            android:id="@+id/text_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_medical_service"
-            android:layout_alignStart="@+id/text_medical_service"
-            android:layout_below="@id/text_medical_service"
-            tools:text="Copia" />
+            android:layout_alignLeft="@+id/text_title"
+            android:layout_alignStart="@+id/text_title"
+            android:layout_below="@id/text_title"
+            tools:text="Autor" />
 
         <Button
-            android:id="@+id/button_cancel_appointment"
+            android:id="@+id/button_renew"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@id/vertical_separator"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
             android:text="Renovar"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/text_medical_center"
+            android:id="@+id/text_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/button_cancel_appointment"
-            android:layout_alignLeft="@+id/text_doctor_name"
-            android:layout_alignStart="@+id/text_doctor_name"
-            android:layout_below="@+id/text_doctor_name"
+            android:layout_above="@id/button_renew"
+            android:layout_alignLeft="@+id/text_author"
+            android:layout_alignStart="@+id/text_author"
+            android:layout_below="@+id/text_author"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text="Vencimiento" />
+            tools:text="Estado" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -27,9 +27,9 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
 
     interface OnItemClickListener {
 
-        void onItemClick(PrestamosDisplayList clickedAppointment);
+        void onItemClick(PrestamosDisplayList clickedItem);
 
-        void onRenewBook(PrestamosDisplayList canceledAppointment);
+        void onRenewBook(PrestamosDisplayList canceledItem);
 
     }
 
@@ -48,48 +48,48 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
 
 
 
-    public void swapItems(List<PrestamosDisplayList> appointments) {
-        if (appointments == null) {
+    public void swapItems(List<PrestamosDisplayList> loans) {
+        if (loans == null) {
             mItems = new ArrayList<>(0);
         } else {
-            mItems = appointments;
+            mItems = loans;
         }
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        PrestamosDisplayList appointment = mItems.get(position);
+        PrestamosDisplayList loan = mItems.get(position);
 
         View statusIndicator = holder.statusIndicator;
 
         // estado: se colorea indicador según el estado
-        switch (appointment.getStatus()) {
+        switch (loan.getStatus()) {
             case "Renovable":
                 // mostrar botón
-                holder.cancelButton.setVisibility(View.VISIBLE);
+                holder.renewButton.setVisibility(View.VISIBLE);
                 statusIndicator.setBackgroundResource(R.color.vencidaStatus);
                 break;
             case "Vencido":
                 // ocultar botón
-                holder.cancelButton.setVisibility(View.GONE);
+                holder.renewButton.setVisibility(View.GONE);
                 statusIndicator.setBackgroundResource(R.color.porvencerStatus);
                 break;
             case "No renovable":
                 // mostrar botón
-                holder.cancelButton.setVisibility(View.GONE);
+                holder.renewButton.setVisibility(View.GONE);
                 statusIndicator.setBackgroundResource(R.color.vencidaStatus);
                 break;
         }
 
-        Date date = appointment.getDueBackDt();
+        Date date = loan.getDueBackDt();
 
         String fDate = "Vencimiento\n" + formatDate(date);
 
         holder.date.setText(fDate);
-        holder.service.setText(appointment.getTitle());
-        holder.doctor.setText(appointment.getAuthor());
-        holder.medicalCenter.setText(appointment.getStatus());
+        holder.title.setText(loan.getTitle());
+        holder.author.setText(loan.getAuthor());
+        holder.status.setText(loan.getStatus());
     }
 
     private String formatDate(Date date) {
@@ -111,23 +111,23 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView date;
-        public TextView service;
-        public TextView doctor;
-        public TextView medicalCenter;
-        public Button cancelButton;
+        public TextView title;
+        public TextView author;
+        public TextView status;
+        public Button renewButton;
         public View statusIndicator;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            statusIndicator = itemView.findViewById(R.id.indicator_appointment_status);
-            date = (TextView) itemView.findViewById(R.id.text_appointment_date);
-            service = (TextView) itemView.findViewById(R.id.text_medical_service);
-            doctor = (TextView) itemView.findViewById(R.id.text_doctor_name);
-            medicalCenter = (TextView) itemView.findViewById(R.id.text_medical_center);
-            cancelButton = (Button) itemView.findViewById(R.id.button_cancel_appointment);
+            statusIndicator = itemView.findViewById(R.id.indicator_status);
+            date = (TextView) itemView.findViewById(R.id.text_date);
+            title = (TextView) itemView.findViewById(R.id.text_title);
+            author = (TextView) itemView.findViewById(R.id.text_author);
+            status = (TextView) itemView.findViewById(R.id.text_status);
+            renewButton = (Button) itemView.findViewById(R.id.button_renew);
 
-            cancelButton.setOnClickListener(new View.OnClickListener() {
+            renewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();

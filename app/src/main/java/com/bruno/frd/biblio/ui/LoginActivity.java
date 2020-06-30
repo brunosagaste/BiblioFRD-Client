@@ -14,17 +14,18 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bruno.frd.biblio.R;
 import com.bruno.frd.biblio.data.api.BiblioApi;
-import com.bruno.frd.biblio.data.api.model.Socio;
 import com.bruno.frd.biblio.data.api.model.ApiError;
 import com.bruno.frd.biblio.data.api.model.LoginBody;
+import com.bruno.frd.biblio.data.api.model.User;
 import com.bruno.frd.biblio.data.prefs.SessionPrefs;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
@@ -147,10 +148,10 @@ public class LoginActivity extends AppCompatActivity {
             // Mostrar el indicador de carga y luego iniciar la petición asíncrona.
             showProgress(true);
 
-            Call<Socio> loginCall = mSaludMockApi.login(new LoginBody(userId, password));
-            loginCall.enqueue(new Callback<Socio>() {
+            Call<User> loginCall = mSaludMockApi.login(new LoginBody(userId, password));
+            loginCall.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<Socio> call, Response<Socio> response) {
+                public void onResponse(Call<User> call, Response<User> response) {
                     // Mostrar progreso
                     showProgress(false);
 
@@ -181,16 +182,16 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     // Guardar usuario en preferencias
-                    SessionPrefs.get(LoginActivity.this).saveAffiliate(response.body());
-                    Log.d("tokenResponse", response.body().getToken());
-                    Log.d("tokenPref", SessionPrefs.get(LoginActivity.this).getToken());
+                    SessionPrefs.get(LoginActivity.this).saveUser(response.body());
+                    // Log.d("tokenResponse", response.body().getToken());
+                    //Log.d("tokenPref", SessionPrefs.get(LoginActivity.this).getToken());
 
                     // Ir a préstamos
                     showMainScreen();
                 }
 
                 @Override
-                public void onFailure(Call<Socio> call, Throwable t) {
+                public void onFailure(Call<User> call, Throwable t) {
                     showProgress(false);
                     showLoginError(t.getMessage());
                 }
@@ -220,7 +221,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLoginError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
+        Snackbar snackbar = Snackbar.make(linearLayout, error, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     private boolean isOnline() {

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardUseCompatPadding="true">
+
+    <!-- Indicador de estado -->
+    <View
+        android:id="@+id/indicator_book_status"
+        android:layout_width="8dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#E0E0E0" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/book_info"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            tools:text="Tag1,\nTag2" />
+
+        <View
+            android:id="@+id/vertical_separator"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/book_info"
+            android:layout_toRightOf="@+id/book_info"
+            android:background="#E0E0E0" />
+
+        <TextView
+            android:id="@+id/book_name"
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/vertical_separator"
+            android:layout_toRightOf="@+id/vertical_separator"
+            android:fontFamily="@font/roboto_light"
+            android:maxLines="2"
+            android:textSize="16dp"
+            tools:text="Libro" />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/copias_text"
+            android:layout_alignStart="@+id/book_name"
+            android:layout_below="@id/book_name"
+            tools:text="Autor" />
+
+        <TextView
+            android:id="@+id/copias_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/author_name"
+            android:layout_alignStart="@+id/author_name"
+            android:layout_below="@+id/author_name"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="0 copias disponibles" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

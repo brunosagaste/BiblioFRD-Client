@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:id="@+id/linear_layout"
     tools:context="com.bruno.frd.biblio.ui.LoginActivity">
 
     <!-- Login progress -->
@@ -24,9 +25,9 @@
     <ImageView
         android:id="@+id/image_logo"
         android:layout_width="150dp"
-        android:layout_height="118dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         app:srcCompat="@drawable/utn_logo" />
 
     <ScrollView

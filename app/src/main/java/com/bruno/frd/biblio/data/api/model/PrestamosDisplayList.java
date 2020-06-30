@@ -2,11 +2,12 @@ package com.bruno.frd.biblio.data.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class PrestamosDisplayList {
+public class PrestamosDisplayList implements Serializable {
 
     // estados:
     public static List<String> STATES_VALUES =

@@ -13,11 +13,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="PasswordTextField" parent="AppTheme">
+        <item name="colorAccent">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@android:color/darker_gray</item>
+        <item name="colorControlHighlight">@android:color/darker_gray</item>
+    </style>
 
     <!-- Login -->
     <style name="AppTheme.Login" parent="AppTheme.NoActionBar">
@@ -34,6 +40,21 @@
 
     <style name="WhiteProgress">
         <item name="colorAccent">@android:color/white</item>
+    </style>
+
+    <style name="ExpandedAppBar20" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="ExpandedAppBar40" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="PasswordActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="titleTextStyle">@style/PasswordActionBarTitle</item>
+    </style>
+    <style name="PasswordActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>
