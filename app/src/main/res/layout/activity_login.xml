@@ -22,18 +22,28 @@
         android:theme="@style/WhiteProgress"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="0.2"
+        >
+
     <ImageView
         android:id="@+id/image_logo"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:srcCompat="@drawable/utn_logo" />
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/login_form"
+        android:layout_weight="0.5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"

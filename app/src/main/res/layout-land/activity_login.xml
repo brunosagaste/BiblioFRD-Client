@@ -25,10 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:padding="80dp"
         app:srcCompat="@drawable/utn_logo" />
 
     <ScrollView
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="80dp"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -56,9 +57,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_user_id"
-                    android:inputType="number"
+                    android:inputType="textEmailAddress"
                     android:maxLength="10"
                     android:maxLines="1"
+                    android:imeOptions="flagNoExtractUi"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
 
@@ -78,9 +80,9 @@
                     android:hint="@string/prompt_password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:imeOptions="flagNoExtractUi"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
 
