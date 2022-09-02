@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Redirección al Login si no está loguado
+        // Redirección al Login si no está logueado
         if (!SessionPrefs.get(this).isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         mStatusFilterSpinner = (Spinner) findViewById(R.id.toolbar_spinner);
         mStatusFilterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Ejecutar filtro de citas médicas
                 String status = parent.getItemAtPosition(position).toString();
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRenewBook(PrestamosDisplayList copy) {
-                renewBook(copy.getCopyid());
+                renewBook(copy.getBibid(), copy.getCopyid());
             }
 
         });
@@ -243,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.profile) {
             startActivity(new Intent(this, ProfileActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -274,11 +272,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadLoans(String rawStatus) {
-
         showLoadingIndicator(true);
-
         String token = SessionPrefs.get(this).getToken();
-
         String status = "";
 
         // Elegir valor del estado según la opción del spinner
@@ -389,8 +384,7 @@ public class MainActivity extends AppCompatActivity {
         mEmptyStateContainer.setVisibility(View.VISIBLE);
     }
 
-    private void renewBook(int copyId) {
-        // TODO: Mostrar estado de carga
+    private void renewBook(int bibId, int copyId) {
 
         // Obtener token de usuario
         String token = SessionPrefs.get(this).getToken();
@@ -400,14 +394,14 @@ public class MainActivity extends AppCompatActivity {
         statusMap.put("status", "Cancelada");
 
         // Enviar petición
-        mBiblioApi.renewBook(copyId, token).enqueue(
+        mBiblioApi.renewBook(bibId, copyId, token).enqueue(
                 new Callback<ApiMessageResponse>() {
                     @Override
                     public void onResponse(Call<ApiMessageResponse> call,
                                            Response<ApiMessageResponse> response) {
                         if (!response.isSuccessful()) {
                             // Procesar error de API
-                            String error = "Ha ocurrido un error. Contacte al administrador";
+                            String error = "Ha ocurrido un error. Contacte al administrador.";
                             if (response.errorBody()
                                     .contentType()
                                     .subtype()
@@ -425,7 +419,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
 
-                            // TODO: Ocultar estado de carga
                             showErrorMessage(error);
                             return;
                         }
@@ -434,18 +427,15 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, response.body().getResults().getMessage());
                         String message = response.body().getResults().getMessage();
                         //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-
                         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
 
                         Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
                         snackbar.show();
                         loadLoans(getCurrentState());
-                        // TODO: Ocultar estado de carga
                     }
 
                     @Override
                     public void onFailure(Call<ApiMessageResponse> call, Throwable t) {
-                        // TODO: Ocultar estado de carga
                         Log.d(TAG, "Petición rechazada:" + t.getMessage());
                         showErrorMessage("Error de comunicación");
                     }
@@ -495,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Procesar errores
                 if (!response.isSuccessful()) {
-                    String error = "Ha ocurrido un error. Contacte al administrador";
+                    String error = "Ha ocurrido un error. Contacte al administrador.";
                     if (response.errorBody()
                             .contentType()
                             .subtype()

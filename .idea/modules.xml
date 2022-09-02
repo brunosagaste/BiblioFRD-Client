@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="biblioFRD/app" />
-      <module fileurl="file://$PROJECT_DIR$/biblioFRD.iml" filepath="$PROJECT_DIR$/biblioFRD.iml" group="biblioFRD" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/biblioFRD-Client.iml" filepath="$PROJECT_DIR$/.idea/modules/biblioFRD-Client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/biblioFRD-Client.app.unitTest.iml" />
     </modules>
   </component>
 </project>

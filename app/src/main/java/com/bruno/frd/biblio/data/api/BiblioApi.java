@@ -17,6 +17,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -25,7 +26,7 @@ import retrofit2.http.QueryMap;
 
 public interface BiblioApi {
 
-    public static final String BASE_URL = "http://192.168.1.125/biblioteca/public/";
+    public static final String BASE_URL = "http://asus.lan/biblioFRD-Server/public/";
 
     @POST("login")
     Call<User> login(@Body LoginBody loginBody);
@@ -35,18 +36,21 @@ public interface BiblioApi {
                                             @QueryMap Map<String, Object> parameters);
 
     @Headers("Content-Type: application/json")
-    @GET("renewal/book/{id}")
-    Call<ApiMessageResponse> renewBook(@Path("id") int appoitmentId,
-                                               @Header("Authorization") String token);
+    @GET("renewal/book")
+    Call<ApiMessageResponse> renewBook(@Query("bibid") int bibId,
+                                       @Query("copyid") int copyId,
+                                       @Header("Authorization") String token);
 
     @GET("search/text/{search_text}")
     Call<ApiSearchResponse> getSearch(@Path("search_text") String searchText,
                                       @Header("Authorization") String token);
 
     @POST("regid")
-    Call<ApiMessageResponse> sendToken(@Header("Authorization") String usertoken, @Body RegIDTokenBody regidtoken);
+    Call<ApiMessageResponse> sendToken(@Header("Authorization") String usertoken,
+                                       @Body RegIDTokenBody regidtoken);
 
     @POST("password")
-    Call<ApiMessageResponse> sendPassword(@Header("Authorization") String token, @Body PasswordBody password);
+    Call<ApiMessageResponse> sendPassword(@Header("Authorization") String token,
+                                          @Body PasswordBody password);
 
 }

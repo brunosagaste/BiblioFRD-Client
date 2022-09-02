@@ -35,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         String name = SessionPrefs.get(this).getName() + " " + SessionPrefs.get(this).getLastName();
 
@@ -105,22 +104,23 @@ public class ProfileActivity extends AppCompatActivity {
             snackbar.show();
             getIntent().removeExtra("DATA");
         }
-
-
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         showMainScreen();
     }
 
-
     private void showMainScreen() {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-        //finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        showMainScreen();
+        return true;
     }
 
     private void initCollapsingToolbar(final String name) {

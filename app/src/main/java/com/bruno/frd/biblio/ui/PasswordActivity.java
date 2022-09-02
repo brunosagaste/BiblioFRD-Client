@@ -3,7 +3,6 @@ package com.bruno.frd.biblio.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +47,7 @@ public class PasswordActivity extends AppCompatActivity {
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.pw_toolbar);
         mActionBarToolbar.setTitle("Cambio de contraseña");
         setSupportActionBar(mActionBarToolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -75,17 +75,27 @@ public class PasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendPasswordRequest(oldpw.getText().toString(), newpw.getText().toString(), confpw.getText().toString());
-
             }
         });
-
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent = new Intent(getApplicationContext(), ProfileActivity.class);
         startActivityForResult(myIntent, 0);
         return true;
+    }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        showProfileScreen();
+        return true;
+    }
+
+    private void showProfileScreen() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private void sendPasswordRequest(String oldpw, final String newpw, final String confirmpw) {
@@ -137,9 +147,7 @@ public class PasswordActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
                     //showErrorMessage(error);
-
                     return;
                 }
 
@@ -149,9 +157,7 @@ public class PasswordActivity extends AppCompatActivity {
                 bundle.putSerializable("DATA",response.body().getMessage());
                 item_intent.putExtras(bundle);
                 startActivity(item_intent);
-
             }
-
 
             @Override
             public void onFailure(Call<ApiMessageResponse> call, Throwable t) {
@@ -160,5 +166,4 @@ public class PasswordActivity extends AppCompatActivity {
             }
         });
     }
-
 }

@@ -68,20 +68,20 @@ public class SearchActivity extends AppCompatActivity {
         //Creo el listado de resultados
         loadRecyclerView();
 
-
         final TextView searchText = (TextView) mSearchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     hideKeyboard(getActivity(searchText.getContext()));
-                    loadSearch(searchText.getText().toString());
+                    if (!searchText.getText().toString().isEmpty()) {
+                        loadSearch(searchText.getText().toString());
+                    }
                     return true;
                 }
                 return false;
             }
         });
-
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_search_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -91,12 +91,11 @@ public class SearchActivity extends AppCompatActivity {
                 if (searchText.getText().toString().isEmpty()) {
                     showLoadingIndicator(false);
                 } else {
-                    Log.d("String de busqueda",searchText.getText().toString());
+                    Log.d("String de busqueda", searchText.getText().toString());
                     loadSearch(searchText.getText().toString());
                 }
             }
         });
-
 
         // Crear adaptador Retrofit
         Gson gson = new GsonBuilder()
@@ -123,8 +122,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         showMainScreen();
     }
 
@@ -139,7 +137,6 @@ public class SearchActivity extends AppCompatActivity {
     public void loadSearch(String searchText) {
 
         showLoadingIndicator(true);
-
         String token = SessionPrefs.get(this).getToken();
 
         // Realizar petición HTTP
@@ -185,9 +182,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 showLoadingIndicator(false);
-
                 mSearchList.requestFocus();
-
             }
 
 
@@ -209,18 +204,14 @@ public class SearchActivity extends AppCompatActivity {
 
     private void showResults(List<SearchDisplayList> serverResult) {
         mSearchAdapter.swapItems(serverResult);
-
         mSearchList.setVisibility(View.VISIBLE);
         mEmptyStateContainer.setVisibility(View.GONE);
-
     }
 
     private void showNoResults() {
         mSearchList.setVisibility(View.GONE);
         mEmptyStateContainer.setVisibility(View.VISIBLE);
     }
-
-
 
     private void showLoadingIndicator(final boolean show) {
         final SwipeRefreshLayout refreshLayout =
@@ -262,7 +253,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
     public void loadRecyclerView(){
-
         mSearchList = (RecyclerView) findViewById(R.id.list_search);
         mSearchAdapter = new SearchAdapter(this, new ArrayList<SearchDisplayList>(0));
         mSearchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
