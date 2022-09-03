@@ -63,7 +63,6 @@ public class PasswordActivity extends AppCompatActivity {
         // Creamos conexión a la API de la app
         mBiblioApi = mRestAdapter.create(BiblioApi.class);
 
-        // TODO: OnClick -> sendPass
         oldpw_layout = findViewById(R.id.float_label_actual_password);
         newpw_layout = findViewById(R.id.float_label_new_password);
         confpw_layout = findViewById(R.id.float_label_confirm_password);

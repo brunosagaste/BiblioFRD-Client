@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -31,11 +33,11 @@ import com.bruno.frd.biblio.data.api.model.RegIDTokenBody;
 import com.bruno.frd.biblio.data.prefs.SessionPrefs;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -57,6 +59,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.danimahardhika.cafebar.CafeBar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -178,16 +182,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Reviso si puede recibir notificaciones
         if (checkGooglePlayServices()) {
-            // Obtener token de Firebase para mandar notificaciones
-            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-                @Override
-                public void onSuccess(InstanceIdResult instanceIdResult) {
-                    String deviceToken = instanceIdResult.getToken();
-                    Log.d(TAG, "Firebase Token: " + deviceToken);
-                    // Enviamos el FCM Registration ID al server
-                    sendRegistrationToServer(deviceToken);
-                }
-            });
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                                return;
+                            }
+                            // Get new FCM registration token
+                            // Obtener token de Firebase para mandar notificaciones
+                            String token = task.getResult();
+                            // Log.d(TAG, "Firebase Token: " + token);
+                            sendRegistrationToServer(token);
+                        }
+                    });
         } else {
             Log.w(TAG, "Device doesn't have Google Play Services");
         }
@@ -202,8 +211,14 @@ public class MainActivity extends AppCompatActivity {
                 if (extras != null) {
                     String text = extras.getString("message");
                     CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-                    Snackbar snackbar = Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_LONG);
-                    snackbar.show();
+                    CafeBar.builder(coordinatorLayout.getContext())
+                            .floating(true)
+                            .content(text)
+                            .to(coordinatorLayout)
+                            .neutralText("Aceptar")
+                            .duration(CafeBar.Duration.LONG)
+                            .show();
+                    loadLoans(getCurrentState());
                 }
             }
         };
@@ -225,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            // Antes de desloguar vamos a ver si hay internet para que el servidor se entere, sino vamos a seguir enviandole notificaciones
+            // Antes de desloguear vamos a ver si hay internet para que el servidor se entere, sino vamos a seguir enviandole notificaciones
             if (internetConnectionAvailable(500)) {
                 // Al desloguarse mandamos un FCM Registration ID nulo al server para que no le sigan llegando notificaciones
                 String deviceToken = null;
@@ -234,8 +249,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, LoginActivity.class));
             } else {
                 CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, "No hay conexión a internet", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                CafeBar.builder(coordinatorLayout.getContext())
+                        .floating(true)
+                        .content("No hay conexión a internet")
+                        .to(coordinatorLayout)
+                        .neutralText("Aceptar")
+                        .duration(CafeBar.Duration.LONG)
+                        .show();
+                loadLoans(getCurrentState());
             }
         }
 
@@ -342,7 +363,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-
             @Override
             public void onFailure(Call<ApiResponsePrestamos> call, Throwable t) {
                 showLoadingIndicator(false);
@@ -365,8 +385,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void showErrorMessage(String error) {
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG);
-        snackbar.show();
+        CafeBar.builder(coordinatorLayout.getContext())
+                .floating(true)
+                .content(error)
+                .to(coordinatorLayout)
+                .neutralText("Aceptar")
+                .duration(CafeBar.Duration.LONG)
+                .show();
         //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         //loadLoans(getCurrentState());
     }
@@ -429,8 +454,13 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
                         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
 
-                        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                        CafeBar.builder(coordinatorLayout.getContext())
+                                .floating(true)
+                                .content(message)
+                                .to(coordinatorLayout)
+                                .neutralText("Aceptar")
+                                .duration(CafeBar.Duration.LONG)
+                                .show();
                         loadLoans(getCurrentState());
                     }
 
