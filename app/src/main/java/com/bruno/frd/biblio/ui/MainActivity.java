@@ -104,9 +104,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showSearchScreen();
-                Log.d("Fab", "Por lo menos pinta que anda");
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
             }
         });
 
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(PrestamosDisplayList clickedItem) {
                 Intent item_intent = new Intent(MainActivity.this, ItemActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("DATA",clickedItem);
+                bundle.putSerializable("DATA", clickedItem);
                 item_intent.putExtras(bundle);
                 startActivity(item_intent);
             }
