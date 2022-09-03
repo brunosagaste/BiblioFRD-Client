@@ -145,46 +145,52 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiSearchResponse> call,
                                    Response<ApiSearchResponse> response) {
-                if (!response.isSuccessful()) {
-                    // Procesar error de API
-                    String error = "Ha ocurrido un error. Contacte al administrador";
-                    if (response.errorBody()
-                            .contentType()
-                            .subtype()
-                            .equals("json")) {
-                        ApiError apiError = ApiError.fromResponseBody(response.errorBody());
+                try {
+                    if (!response.isSuccessful()) {
+                        // Procesar error de API
+                        String error = "Ha ocurrido un error. Contacte al administrador";
+                        if (response.errorBody()
+                                .contentType()
+                                .subtype()
+                                .equals("json")) {
+                            ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
-                        error = apiError.getMessage();
-                        Log.d(TAG, apiError.getDeveloperMessage());
+                            error = apiError.getMessage();
+                            Log.d(TAG, apiError.getDeveloperMessage());
 
-                    } else {
-                        // Reportar causas de error no relacionado con la API
-                        try {
-                            Log.d(TAG, response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } else {
+                            // Reportar causas de error no relacionado con la API
+                            try {
+                                Log.d(TAG, response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        showLoadingIndicator(false);
+                        showErrorMessage(error);
+                        return;
                     }
+
+                    List<SearchDisplayList> serverResults = response.body().getResults();
+                    Log.d(TAG, response.body().getResults().toString());
+
+                    if (serverResults.size() > 0) {
+                        // Mostrar lista de citas médicas
+                        showResults(serverResults);
+                    } else {
+                        // Mostrar empty state
+                        showNoResults();
+                    }
+
                     showLoadingIndicator(false);
-                    showErrorMessage(error);
-                    return;
+                    mSearchList.requestFocus();
                 }
-
-                List<SearchDisplayList> serverResults = response.body().getResults();
-                Log.d(TAG, response.body().getResults().toString());
-
-                if (serverResults.size() > 0) {
-                    // Mostrar lista de citas médicas
-                    showResults(serverResults);
-                } else {
-                    // Mostrar empty state
+                catch(Exception e) {
+                    showLoadingIndicator(false);
                     showNoResults();
+                    showErrorMessage("HTTP Error: " + String.valueOf(response.code()));
                 }
-
-                showLoadingIndicator(false);
-                mSearchList.requestFocus();
             }
-
 
             @Override
             public void onFailure(Call<ApiSearchResponse> call, Throwable t) {

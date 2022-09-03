@@ -155,39 +155,42 @@ public class LoginActivity extends AppCompatActivity {
                     // Mostrar progreso
                     showProgress(false);
 
-                    // Procesar errores
-                    if (!response.isSuccessful()) {
-                        String error = "Ha ocurrido un error. Contacte al administrador";
-                        if (response.errorBody()
-                                .contentType()
-                                .subtype()
-                                .equals("json")) {
-                            ApiError apiError = ApiError.fromResponseBody(response.errorBody());
-                            mFloatLabelUserId.setError(apiError.getMessage());
-                            mFloatLabelUserId.requestFocus();
+                    try {
+                        // Procesar errores
+                        if (!response.isSuccessful()) {
+                            String error = "Ha ocurrido un error. Contacte al administrador";
+                            if (response.errorBody()
+                                    .contentType()
+                                    .subtype()
+                                    .equals("json")) {
+                                ApiError apiError = ApiError.fromResponseBody(response.errorBody());
+                                mFloatLabelUserId.setError(apiError.getMessage());
+                                mFloatLabelUserId.requestFocus();
 
-                            error = apiError.getMessage();
-                            Log.d("LoginActivity", apiError.getDeveloperMessage());
-                        } else {
-                            try {
-                                // Reportar causas de error no relacionado con la API
-                                Log.d("LoginActivity", response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                error = apiError.getMessage();
+                                Log.d("LoginActivity", apiError.getDeveloperMessage());
+                            } else {
+                                try {
+                                    // Reportar causas de error no relacionado con la API
+                                    Log.d("LoginActivity", response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            //showLoginError(error);
+                            return;
                         }
+                        // Guardar usuario en preferencias
+                        SessionPrefs.get(LoginActivity.this).saveUser(response.body());
+                        // Log.d("tokenResponse", response.body().getToken());
+                        //Log.d("tokenPref", SessionPrefs.get(LoginActivity.this).getToken());
 
-                        //showLoginError(error);
-                        return;
+                        // Ir a préstamos
+                        showMainScreen();
                     }
-
-                    // Guardar usuario en preferencias
-                    SessionPrefs.get(LoginActivity.this).saveUser(response.body());
-                    // Log.d("tokenResponse", response.body().getToken());
-                    //Log.d("tokenPref", SessionPrefs.get(LoginActivity.this).getToken());
-
-                    // Ir a préstamos
-                    showMainScreen();
+                    catch(Exception e) {
+                        showLoginError("HTTP Error: " + String.valueOf(response.code()));
+                    }
                 }
 
                 @Override

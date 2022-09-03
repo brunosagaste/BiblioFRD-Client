@@ -107,55 +107,64 @@ public class PasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiMessageResponse> call,
                                    Response<ApiMessageResponse> response) {
-                if (!response.isSuccessful()) {
-                    // Procesar error de API
-                    String error = "Ha ocurrido un error. Contacte al administrador";
-                    if (response.errorBody()
-                            .contentType()
-                            .subtype()
-                            .equals("json")) {
-                        ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
-                        error = apiError.getMessage();
-                        String field = apiError.getDeveloperMessage();
-                        if (field.equals("oldpw")) {
-                            oldpw_layout.setError(error);
-                            oldpw_layout.requestFocus();
-                            newpw_layout.setErrorEnabled(false);
-                            confpw_layout.setErrorEnabled(false);
-                        }
-                        if (field.equals("newpw")) {
-                            newpw_layout.setError(error);
-                            newpw_layout.requestFocus();
-                            oldpw_layout.setErrorEnabled(false);
-                            confpw_layout.setErrorEnabled(false);
-                        }
-                        if (field.equals("confpw")) {
-                            confpw_layout.setError(error);
-                            confpw_layout.requestFocus();
-                            oldpw_layout.setErrorEnabled(false);
-                            newpw_layout.setErrorEnabled(false);
-                        }
-                        Log.d(TAG, error);
+                try {
+                    if (!response.isSuccessful()) {
+                        // Procesar error de API
+                        String error = "Ha ocurrido un error. Contacte al administrador";
+                        if (response.errorBody()
+                                .contentType()
+                                .subtype()
+                                .equals("json")) {
+                            ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
-                    } else {
-                        // Reportar causas de error no relacionado con la API
-                        try {
-                            Log.d(TAG, response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            error = apiError.getMessage();
+                            String field = apiError.getDeveloperMessage();
+                            if (field.equals("oldpw")) {
+                                oldpw_layout.setError(error);
+                                oldpw_layout.requestFocus();
+                                newpw_layout.setErrorEnabled(false);
+                                confpw_layout.setErrorEnabled(false);
+                            }
+                            if (field.equals("newpw")) {
+                                newpw_layout.setError(error);
+                                newpw_layout.requestFocus();
+                                oldpw_layout.setErrorEnabled(false);
+                                confpw_layout.setErrorEnabled(false);
+                            }
+                            if (field.equals("confpw")) {
+                                confpw_layout.setError(error);
+                                confpw_layout.requestFocus();
+                                oldpw_layout.setErrorEnabled(false);
+                                newpw_layout.setErrorEnabled(false);
+                            }
+                            Log.d(TAG, error);
+
+                        } else {
+                            // Reportar causas de error no relacionado con la API
+                            try {
+                                Log.d(TAG, response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        //showErrorMessage(error);
+                        return;
                     }
-                    //showErrorMessage(error);
-                    return;
+                    Log.d(TAG, response.body().getMessage());
+                    Intent item_intent = new Intent(PasswordActivity.this, ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("DATA", response.body().getMessage());
+                    item_intent.putExtras(bundle);
+                    startActivity(item_intent);
                 }
-
-                Log.d(TAG, response.body().getMessage());
-                Intent item_intent = new Intent(PasswordActivity.this, ProfileActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("DATA",response.body().getMessage());
-                item_intent.putExtras(bundle);
-                startActivity(item_intent);
+                catch(Exception e) {
+                    Intent item_intent = new Intent(PasswordActivity.this, ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("DATA", "HTTP Error: " + String.valueOf(response.code()));
+                    item_intent.putExtras(bundle);
+                    startActivity(item_intent);
+                }
             }
 
             @Override
