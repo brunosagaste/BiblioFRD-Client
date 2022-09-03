@@ -25,7 +25,7 @@ import com.bruno.frd.biblio.data.api.model.ApiError;
 import com.bruno.frd.biblio.data.api.model.LoginBody;
 import com.bruno.frd.biblio.data.api.model.User;
 import com.bruno.frd.biblio.data.prefs.SessionPrefs;
-import com.google.android.material.snackbar.Snackbar;
+import com.danimahardhika.cafebar.CafeBar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
@@ -221,10 +221,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLoginError(String error) {
-        //Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_layout);
-        Snackbar snackbar = Snackbar.make(linearLayout, error, Snackbar.LENGTH_LONG);
-        snackbar.show();
+        CafeBar.builder(linearLayout.getContext())
+                .floating(true)
+                .content(error)
+                .to(linearLayout)
+                .neutralText("Aceptar")
+                .duration(CafeBar.Duration.LONG)
+                .show();
     }
 
     private boolean isOnline() {

@@ -16,10 +16,10 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.bruno.frd.biblio.R;
 import com.bruno.frd.biblio.data.prefs.SessionPrefs;
+import com.danimahardhika.cafebar.CafeBar;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -100,8 +100,13 @@ public class ProfileActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             final String pw_result_message = (String) getIntent().getExtras().getSerializable("DATA");
             CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.profile_coordinator);
-            Snackbar snackbar = Snackbar.make(coordinatorLayout, pw_result_message, Snackbar.LENGTH_LONG);
-            snackbar.show();
+            CafeBar.builder(coordinatorLayout.getContext())
+                    .floating(true)
+                    .content(pw_result_message)
+                    .to(coordinatorLayout)
+                    .neutralText("Aceptar")
+                    .duration(CafeBar.Duration.LONG)
+                    .show();
             getIntent().removeExtra("DATA");
         }
     }
