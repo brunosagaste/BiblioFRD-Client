@@ -1,6 +1,7 @@
 package com.bruno.frd.biblio.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ public class ItemActivity extends AppCompatActivity {
         item_data.add(item_tuple_author);
         Pair<String, String> item_tuple_status = new Pair<String, String>("Estado", clickedItem.getStatus());
         item_data.add(item_tuple_status);
+        Pair<String, String> item_tuple_begindt = new Pair<String, String>("Inicio de préstamo", formatDate(clickedItem.getLoanBeginDt()));;
+        item_data.add(item_tuple_begindt);
         Pair<String, String> item_tuple_dueback = new Pair<String, String>("Vencimiento", formatDate(clickedItem.getDueBackDt()));;
         item_data.add(item_tuple_dueback);
         if (clickedItem.getDaysLate() > 0) {

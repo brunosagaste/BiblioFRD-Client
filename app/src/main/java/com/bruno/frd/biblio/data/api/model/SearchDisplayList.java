@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class SearchDisplayList implements Serializable {
@@ -22,19 +23,18 @@ public class SearchDisplayList implements Serializable {
     private String mAuthor;
     @SerializedName("topic2")
     private String mTopic2;
-    @SerializedName("status_cd")
-    private String mStatus;
+    @SerializedName("due_back_dt")
+    private Date mDueBackDt;
 
 
     public SearchDisplayList(int bibid, String title,
-                             String status, String author, int copy_free, String topic2) {
+                             String status, String author, int copy_free, String topic2, Date due_back_dt) {
         mBibid = bibid;
         mTitle = title;
-        mStatus = status;
         mAuthor = author;
         mCopyFree = copy_free;
         mTopic2 = topic2;
-
+        mDueBackDt = due_back_dt;
     }
 
     public int getBibid() {
@@ -43,10 +43,6 @@ public class SearchDisplayList implements Serializable {
 
     public String getTitle() {
         return mTitle;
-    }
-
-    public String getStatus() {
-        return mStatus;
     }
 
     public String getAuthor() {
@@ -61,16 +57,16 @@ public class SearchDisplayList implements Serializable {
         return mCopyFree;
     }
 
+    public Date getDueBackDt() {
+        return mDueBackDt;
+    }
+
     public void setBibid(int mBibid) {
         this.mBibid = mBibid;
     }
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
-    }
-
-    public void setStatus(String mStatus) {
-        this.mStatus = mStatus;
     }
 
     public void setAuthor(String mAuthor) {
@@ -83,6 +79,10 @@ public class SearchDisplayList implements Serializable {
 
     public void setTopic2(String mTopic2) {
         this.mTopic2 = mTopic2;
+    }
+
+    public void setDueBackDt(String mTopic2) {
+        this.mDueBackDt = mDueBackDt;
     }
 
 }

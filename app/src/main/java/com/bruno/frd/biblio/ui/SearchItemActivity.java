@@ -1,6 +1,8 @@
 package com.bruno.frd.biblio.ui;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,23 +50,25 @@ public class SearchItemActivity extends AppCompatActivity {
         // Coloco el título
         toolBarLayout.setTitle(clickedItem.getTitle());
 
-        // Si, una lista scrolleable adentro de un ScrollView, una negrada pero a estas alturas muy tarde para cambiarlo. Además es mas rápido de implementar que un RecyclerView.
+        // Una lista scrolleable adentro de un ScrollView, más rápido de implementar que un RecyclerView.
         ListView listview;
         listview = (ListView) findViewById(R.id.item_list);
         final ArrayList<Pair> item_data;
         item_data = new ArrayList<Pair>();
-        Pair<String, String> item_tuple_copyid = new Pair<String, String>("Copias libres", Integer.toString(clickedItem.getCopyFree()));;
-        item_data.add(item_tuple_copyid);
+        Pair<String, String> item_tuple_copy_free = new Pair<String, String>("Copias libres", Integer.toString(clickedItem.getCopyFree()));;
+        item_data.add(item_tuple_copy_free);
         Pair<String, String> item_tuple_author = new Pair<String, String>("Autor", clickedItem.getAuthor());;
         item_data.add(item_tuple_author);
-        Pair<String, String> item_tuple_status = new Pair<String, String>("Estado", clickedItem.getStatus());;
-        item_data.add(item_tuple_status);
         if (clickedItem.getTopic2() != "") {
             Pair<String, String> item_tuple_topic2 = new Pair<String, String>("Tema", clickedItem.getTopic2());
             item_data.add(item_tuple_topic2);
         }
         Pair<String, String> item_tuple_bibid = new Pair<String, String>("Número de libro", Integer.toString(clickedItem.getBibid()));;
         item_data.add(item_tuple_bibid);
+        if (clickedItem.getDueBackDt() != null) {
+            Pair<String, String> item_tuple_due_back_dt = new Pair<String, String>("Devolución más cercana", (String) DateFormat.format("dd-MM-yyyy", clickedItem.getDueBackDt()));
+            item_data.add(item_tuple_due_back_dt);
+        }
 
 
         // Armamos el listado
