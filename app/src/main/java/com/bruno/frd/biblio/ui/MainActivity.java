@@ -297,13 +297,13 @@ public class MainActivity extends AppCompatActivity {
         // Elegir valor del estado según la opción del spinner
         switch (rawStatus) {
             case "Renovable":
-                status = "Renovable";
+                status = "renewable";
                 break;
             case "Vencido":
-                status = "Vencido";
+                status = "overdue";
                 break;
             case "No renovable":
-                status = "No renovable";
+                status = "nonrenewable";
                 break;
             default:
                 status = "Todos";

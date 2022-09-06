@@ -25,15 +25,17 @@ public class PrestamosDisplayList implements Serializable {
     private Date mDueBackDt;
     @SerializedName("days_late")
     private int mDaysLate;
-    @SerializedName("renewable")
-    private boolean mRenew;
+    @SerializedName("renewable_cause")
+    private String mRenew;
     @SerializedName("status")
     private String mStatus;
     @SerializedName("loan_begin_dt")
     private Date mLoanBeginDt;
+    @SerializedName("filter")
+    private String mFilter;
 
     public PrestamosDisplayList(int bibid, Date due_back_dt, String title,
-                                  String status, String author, int copyid, int days_late, boolean renewable, Date loan_begin_dt) {
+                                  String status, String author, int copyid, int days_late, String renewable_cause, Date loan_begin_dt, String filter) {
         mBibid = bibid;
         mDueBackDt = due_back_dt;
         mTitle = title;
@@ -41,8 +43,9 @@ public class PrestamosDisplayList implements Serializable {
         mAuthor = author;
         mCopyid = copyid;
         mDaysLate = days_late;
-        mRenew = renewable;
+        mRenew = renewable_cause;
         mLoanBeginDt = loan_begin_dt;
+        mFilter = filter;
     }
 
     public int getBibid() {
@@ -73,12 +76,16 @@ public class PrestamosDisplayList implements Serializable {
         return mDaysLate;
     }
 
-    public boolean getRenew() {
+    public String getRenewStatus() {
         return mRenew;
     }
 
     public Date getLoanBeginDt() {
         return mLoanBeginDt;
+    }
+
+    public String getFilter() {
+        return mFilter;
     }
 
     public void setBibid(int mBibid) {
@@ -109,11 +116,15 @@ public class PrestamosDisplayList implements Serializable {
         this.mDaysLate = mDaysLate;
     }
 
-    public void setRenew(boolean mRenew) {
+    public void setRenew(String mRenew) {
         this.mRenew = mRenew;
     }
 
-    public void setLoanBeginDt(boolean mLoanBeginDt) {
-        this.mRenew = mLoanBeginDt;
+    public void setLoanBeginDt(Date mLoanBeginDt) {
+        this.mLoanBeginDt = mLoanBeginDt;
+    }
+
+    public void setFilter(String mFilter) {
+        this.mFilter = mFilter;
     }
 }

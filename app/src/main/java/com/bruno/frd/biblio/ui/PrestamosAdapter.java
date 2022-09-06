@@ -64,20 +64,23 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
         View statusIndicator = holder.statusIndicator;
 
         // estado: se colorea indicador según el estado
-        switch (loan.getStatus()) {
-            case "Renovable":
+        switch (loan.getFilter()) {
+            case "renewable":
                 // mostrar botón
                 holder.renewButton.setVisibility(View.VISIBLE);
+                holder.status.setVisibility(View.GONE);
                 statusIndicator.setBackgroundResource(R.color.vencidaStatus);
                 break;
-            case "Vencido":
+            case "overdue":
                 // ocultar botón
                 holder.renewButton.setVisibility(View.GONE);
+                holder.status.setVisibility(View.VISIBLE);
                 statusIndicator.setBackgroundResource(R.color.porvencerStatus);
                 break;
-            case "No renovable":
-                // mostrar botón
+            case "nonrenewable":
+                //  ocultar botón
                 holder.renewButton.setVisibility(View.GONE);
+                holder.status.setVisibility(View.VISIBLE);
                 statusIndicator.setBackgroundResource(R.color.vencidaStatus);
                 break;
         }
@@ -130,7 +133,7 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
             renewButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
+                    int position = getAbsoluteAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         mOnItemClickListener.onRenewBook(mItems.get(position));
                     }
@@ -141,7 +144,7 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+            int position = getAbsoluteAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 mOnItemClickListener.onItemClick(mItems.get(position));
             }

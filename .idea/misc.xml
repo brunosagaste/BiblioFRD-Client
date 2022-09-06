@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/plus.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.2395" />
         <entry key="app/src/main/res/drawable/search_bg.xml" value="0.2395" />
+        <entry key="app/src/main/res/layout/activity_item.xml" value="0.22418478260869565" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22418478260869565" />
         <entry key="app/src/main/res/layout/activity_password.xml" value="0.22418478260869565" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.4860137939453125" />
@@ -20,6 +21,7 @@
         <entry key="app/src/main/res/layout/cafebar_layout.xml" value="0.22418478260869565" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.22418478260869565" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.22418478260869565" />
+        <entry key="app/src/main/res/layout/main_item_list.xml" value="0.3545009447180707" />
       </map>
     </option>
   </component>
