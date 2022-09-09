@@ -47,6 +47,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -238,23 +239,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             // Antes de desloguear vamos a ver si hay internet para que el servidor se entere, sino vamos a seguir enviandole notificaciones
-            if (internetConnectionAvailable(500)) {
-                // Al desloguarse mandamos un FCM Registration ID nulo al server para que no le sigan llegando notificaciones
-                String deviceToken = null;
-                sendRegistrationToServer(deviceToken);
-                SessionPrefs.get(this).logOut();
-                startActivity(new Intent(this, LoginActivity.class));
-            } else {
-                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-                CafeBar.builder(coordinatorLayout.getContext())
-                        .floating(true)
-                        .content("No hay conexión a internet")
-                        .to(coordinatorLayout)
-                        .neutralText("Aceptar")
-                        .duration(CafeBar.Duration.LONG)
-                        .show();
-                loadLoans(getCurrentState());
-            }
+            logOut();
         }
 
         if (id == R.id.profile) {
@@ -292,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadLoans(String rawStatus) {
         showLoadingIndicator(true);
         String token = SessionPrefs.get(this).getToken();
+        String id = SessionPrefs.get(this).getID();
         String status = "";
 
         // Elegir valor del estado según la opción del spinner
@@ -315,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
         parameters.put("status", status);
 
         // Realizar petición HTTP
-        Call<ApiResponsePrestamos> call = mBiblioApi.getPrestamos(token, parameters);
+        Call<ApiResponsePrestamos> call = mBiblioApi.getPrestamos(token, id, parameters);
         call.enqueue(new Callback<ApiResponsePrestamos>() {
             @Override
             public void onResponse(Call<ApiResponsePrestamos> call,
@@ -324,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!response.isSuccessful()) {
                         // Procesar error de API
                         String error = "Ha ocurrido un error. Contacte al administrador";
+                        String deverror = null;
                         if (response.errorBody()
                                 .contentType()
                                 .subtype()
@@ -331,8 +318,8 @@ public class MainActivity extends AppCompatActivity {
                             ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
                             error = apiError.getMessage();
+                            deverror = apiError.getDeveloperMessage();
                             Log.d(TAG, apiError.getDeveloperMessage());
-
                         } else {
                             // Reportar causas de error no relacionado con la API
                             try {
@@ -343,6 +330,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                         showLoadingIndicator(false);
                         showErrorMessage(error);
+                        if (Objects.equals(deverror, "wrongtoken")) {
+                            logOut();
+                        }
                         return;
                     }
                     List<PrestamosDisplayList> serverLoans = response.body().getResults();
@@ -416,13 +406,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Obtener token de usuario
         String token = SessionPrefs.get(this).getToken();
+        String id = SessionPrefs.get(this).getID();
 
         // Preparar cuerpo de la petición
         HashMap<String, String> statusMap = new HashMap<>();
         statusMap.put("status", "Cancelada");
 
         // Enviar petición
-        mBiblioApi.renewBook(bibId, copyId, token).enqueue(
+        mBiblioApi.renewBook(bibId, copyId, token, id).enqueue(
                 new Callback<ApiMessageResponse>() {
                     @Override
                     public void onResponse(Call<ApiMessageResponse> call,
@@ -430,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!response.isSuccessful()) {
                             // Procesar error de API
                             String error = "Ha ocurrido un error. Contacte al administrador.";
+                            String deverror = null;
                             if (response.errorBody()
                                     .contentType()
                                     .subtype()
@@ -437,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
                                 ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
                                 error = apiError.getMessage();
+                                deverror = apiError.getDeveloperMessage();
                                 Log.d(TAG, apiError.getDeveloperMessage());
                             } else {
                                 try {
@@ -446,7 +439,9 @@ public class MainActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-
+                            if (Objects.equals(deverror, "wrongtoken")) {
+                                logOut();
+                            }
                             showErrorMessage(error);
                             return;
                         }
@@ -508,16 +503,18 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         String usertoken = SessionPrefs.get(this).getToken();
+        String id = SessionPrefs.get(this).getID();
 
         // Creamos conexión a la API de la app
         mBiblioApi = mRestAdapter.create(BiblioApi.class);
-        Call<ApiMessageResponse> sendToken = mBiblioApi.sendToken(usertoken, new RegIDTokenBody(regidtoken));
+        Call<ApiMessageResponse> sendToken = mBiblioApi.sendToken(usertoken, id, new RegIDTokenBody(regidtoken));
         sendToken.enqueue(new Callback<ApiMessageResponse>() {
             @Override
             public void onResponse(Call<ApiMessageResponse> call, Response<ApiMessageResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
                         String error = "Ha ocurrido un error. Contacte al administrador.";
+                        String deverror = null;
                         if (response.errorBody()
                                 .contentType()
                                 .subtype()
@@ -527,6 +524,7 @@ public class MainActivity extends AppCompatActivity {
                             //mFloatLabelUserId.requestFocus();
 
                             error = apiError.getMessage();
+                            deverror = apiError.getDeveloperMessage();
                             Log.d(TAG, apiError.getDeveloperMessage());
                         } else {
                             try {
@@ -536,7 +534,9 @@ public class MainActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-
+                        if (Objects.equals(deverror, "wrongtoken")) {
+                            logOut();
+                        }
                         return;
                     }
                 }
@@ -544,10 +544,7 @@ public class MainActivity extends AppCompatActivity {
                     // Reportar el status code en caso de que el error no tenga body
                     Log.d(TAG, String.valueOf(response.code()));
                 }
-
-
                 // Procesar errores
-
             }
 
             @Override
@@ -578,5 +575,25 @@ public class MainActivity extends AppCompatActivity {
         } catch (TimeoutException e) {
         }
         return inetAddress!=null && !inetAddress.equals("");
+    }
+
+    private void logOut() {
+        if (internetConnectionAvailable(500)) {
+            // Al desloguarse mandamos un FCM Registration ID nulo al server para que no le sigan llegando notificaciones
+            String deviceToken = null;
+            sendRegistrationToServer(deviceToken);
+            SessionPrefs.get(this).logOut();
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+            CafeBar.builder(coordinatorLayout.getContext())
+                    .floating(true)
+                    .content("No hay conexión a internet")
+                    .to(coordinatorLayout)
+                    .neutralText("Aceptar")
+                    .duration(CafeBar.Duration.LONG)
+                    .show();
+            loadLoans(getCurrentState());
+        }
     }
 }

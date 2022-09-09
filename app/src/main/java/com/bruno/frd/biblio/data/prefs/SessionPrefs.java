@@ -60,7 +60,7 @@ public class SessionPrefs {
             editor.putString(PREF_USER_FILE, user.getFile());
             editor.putString(PREF_USER_DNI, user.getDni());
             editor.putString(PREF_USER_MAIL, user.getMail());
-            editor.putString(PREF_USER_TOKEN, "Bearer " + user.getToken());
+            editor.putString(PREF_USER_TOKEN, user.getToken());
             //Log.d("tokenPrefInside", affiliate.getToken());
             editor.apply();
 
@@ -83,7 +83,6 @@ public class SessionPrefs {
         editor.putString(PREF_USER_MAIL, null);
         editor.putString(PREF_USER_TOKEN, null);
         editor.apply();
-        editor.commit();
     }
 
     public String getID(){
@@ -115,5 +114,11 @@ public class SessionPrefs {
     }
     public String getFile(){
         return mPrefs.getString(PREF_USER_FILE, null);
+    }
+
+    public void setToken(String token) {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString(PREF_USER_TOKEN, token);
+        editor.apply();
     }
 }

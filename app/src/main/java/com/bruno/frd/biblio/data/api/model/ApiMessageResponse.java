@@ -76,11 +76,11 @@ public class ApiMessageResponse {
         this.message = message;
     }
 
-    public boolean isRssponse() {
+    public boolean isResponse() {
         return response;
     }
 
-    public void setRssponse(boolean rssponse) {
+    public void setResponse(boolean rssponse) {
         this.response = rssponse;
     }
 }

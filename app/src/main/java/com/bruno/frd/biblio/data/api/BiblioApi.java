@@ -5,6 +5,7 @@ import com.bruno.frd.biblio.data.api.model.ApiResponsePrestamos;
 import com.bruno.frd.biblio.data.api.model.ApiSearchResponse;
 import com.bruno.frd.biblio.data.api.model.LoginBody;
 import com.bruno.frd.biblio.data.api.model.PasswordBody;
+import com.bruno.frd.biblio.data.api.model.PasswordResponse;
 import com.bruno.frd.biblio.data.api.model.RegIDTokenBody;
 import com.bruno.frd.biblio.data.api.model.User;
 
@@ -32,25 +33,30 @@ public interface BiblioApi {
     Call<User> login(@Body LoginBody loginBody);
 
     @GET("copy/get")
-    Call<ApiResponsePrestamos> getPrestamos(@Header("Authorization") String token,
+    Call<ApiResponsePrestamos> getPrestamos(@Header("Auth") String token,
+                                            @Header("Id") String id,
                                             @QueryMap Map<String, Object> parameters);
 
     @Headers("Content-Type: application/json")
     @GET("renewal/book")
     Call<ApiMessageResponse> renewBook(@Query("bibid") int bibId,
                                        @Query("copyid") int copyId,
-                                       @Header("Authorization") String token);
+                                       @Header("Auth") String token,
+                                       @Header("Id") String id);
 
     @GET("search/text/{search_text}")
     Call<ApiSearchResponse> getSearch(@Path("search_text") String searchText,
-                                      @Header("Authorization") String token);
+                                      @Header("Auth") String token,
+                                      @Header("Id") String id);
 
     @POST("regid")
-    Call<ApiMessageResponse> sendToken(@Header("Authorization") String usertoken,
+    Call<ApiMessageResponse> sendToken(@Header("Auth") String usertoken,
+                                       @Header("Id") String id,
                                        @Body RegIDTokenBody regidtoken);
 
     @POST("password")
-    Call<ApiMessageResponse> sendPassword(@Header("Authorization") String token,
-                                          @Body PasswordBody password);
+    Call<PasswordResponse> sendPassword(@Header("Auth") String token,
+                                        @Header("Id") String id,
+                                        @Body PasswordBody password);
 
 }

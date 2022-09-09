@@ -71,16 +71,6 @@ public class ItemActivity extends AppCompatActivity {
         }
         Pair<String, String> item_tuple_bibid = new Pair<String, String>("Número de libro", Integer.toString(clickedItem.getBibid()));
         item_data.add(item_tuple_bibid);
-        if (Objects.equals(clickedItem.getFilter(), "renewable")) {
-            Pair<String, String> item_tuple_renew = new Pair<String, String>("Renovable", "Si");
-            item_data.add(item_tuple_renew);
-        } else if (Objects.equals(clickedItem.getRenewStatus(), "date")) {
-            Pair<String, String> item_tuple_renew = new Pair<String, String>("Renovable", clickedItem.getStatus());
-            item_data.add(item_tuple_renew);
-        } else {
-            Pair<String, String> item_tuple_renew = new Pair<String, String>("Renovable", "No");
-            item_data.add(item_tuple_renew);
-        }
 
         // Armamos el listado
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, item_data) {

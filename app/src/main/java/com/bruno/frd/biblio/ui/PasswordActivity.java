@@ -15,12 +15,14 @@ import com.bruno.frd.biblio.data.api.BiblioApi;
 import com.bruno.frd.biblio.data.api.model.ApiError;
 import com.bruno.frd.biblio.data.api.model.ApiMessageResponse;
 import com.bruno.frd.biblio.data.api.model.PasswordBody;
+import com.bruno.frd.biblio.data.api.model.PasswordResponse;
 import com.bruno.frd.biblio.data.prefs.SessionPrefs;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,18 +102,19 @@ public class PasswordActivity extends AppCompatActivity {
     private void sendPasswordRequest(String oldpw, final String newpw, final String confirmpw) {
 
         String token = SessionPrefs.get(this).getToken();
+        String id = SessionPrefs.get(this).getID();
         PasswordBody pwbody = new PasswordBody(oldpw, newpw, confirmpw);
         // Realizar petición HTTP
-        Call<ApiMessageResponse> call = mBiblioApi.sendPassword(token, pwbody);
-        call.enqueue(new Callback<ApiMessageResponse>() {
+        Call<PasswordResponse> call = mBiblioApi.sendPassword(token, id, pwbody);
+        call.enqueue(new Callback<PasswordResponse>() {
             @Override
-            public void onResponse(Call<ApiMessageResponse> call,
-                                   Response<ApiMessageResponse> response) {
-
+            public void onResponse(Call<PasswordResponse> call,
+                                   Response<PasswordResponse> response) {
                 try {
                     if (!response.isSuccessful()) {
                         // Procesar error de API
                         String error = "Ha ocurrido un error. Contacte al administrador";
+                        String field = null;
                         if (response.errorBody()
                                 .contentType()
                                 .subtype()
@@ -119,7 +122,7 @@ public class PasswordActivity extends AppCompatActivity {
                             ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
                             error = apiError.getMessage();
-                            String field = apiError.getDeveloperMessage();
+                            field = apiError.getDeveloperMessage();
                             if (field.equals("oldpw")) {
                                 oldpw_layout.setError(error);
                                 oldpw_layout.requestFocus();
@@ -139,7 +142,6 @@ public class PasswordActivity extends AppCompatActivity {
                                 newpw_layout.setErrorEnabled(false);
                             }
                             Log.d(TAG, error);
-
                         } else {
                             // Reportar causas de error no relacionado con la API
                             try {
@@ -148,10 +150,15 @@ public class PasswordActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        //showErrorMessage(error);
+                        if (Objects.equals(field, "wrongtoken")) {
+                            showProfileScreen();
+                        }
                         return;
                     }
+
+                    Log.d(TAG + " PassToken ", response.body().getToken());
                     Log.d(TAG, response.body().getMessage());
+                    SessionPrefs.get(PasswordActivity.this).setToken(response.body().getToken());
                     Intent item_intent = new Intent(PasswordActivity.this, ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("DATA", response.body().getMessage());
@@ -168,7 +175,7 @@ public class PasswordActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiMessageResponse> call, Throwable t) {
+            public void onFailure(Call<PasswordResponse> call, Throwable t) {
                 Log.d(TAG, "Petición rechazada:" + t.getMessage());
                 //showErrorMessage("No hay conexión a internet");
             }

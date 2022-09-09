@@ -32,6 +32,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -138,9 +139,10 @@ public class SearchActivity extends AppCompatActivity {
 
         showLoadingIndicator(true);
         String token = SessionPrefs.get(this).getToken();
+        String id = SessionPrefs.get(this).getID();
 
         // Realizar petición HTTP
-        Call<ApiSearchResponse> call = mBiblioApi.getSearch(searchText, token);
+        Call<ApiSearchResponse> call = mBiblioApi.getSearch(searchText, token, id);
         call.enqueue(new Callback<ApiSearchResponse>() {
             @Override
             public void onResponse(Call<ApiSearchResponse> call,
@@ -149,6 +151,7 @@ public class SearchActivity extends AppCompatActivity {
                     if (!response.isSuccessful()) {
                         // Procesar error de API
                         String error = "Ha ocurrido un error. Contacte al administrador";
+                        String deverror = null;
                         if (response.errorBody()
                                 .contentType()
                                 .subtype()
@@ -156,8 +159,8 @@ public class SearchActivity extends AppCompatActivity {
                             ApiError apiError = ApiError.fromResponseBody(response.errorBody());
 
                             error = apiError.getMessage();
+                            deverror = apiError.getDeveloperMessage();
                             Log.d(TAG, apiError.getDeveloperMessage());
-
                         } else {
                             // Reportar causas de error no relacionado con la API
                             try {
@@ -167,6 +170,9 @@ public class SearchActivity extends AppCompatActivity {
                             }
                         }
                         showLoadingIndicator(false);
+                        if (Objects.equals(deverror, "wrongtoken")) {
+                            showMainScreen();
+                        }
                         showErrorMessage(error);
                         return;
                     }
