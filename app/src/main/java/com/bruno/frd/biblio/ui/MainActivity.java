@@ -534,9 +534,6 @@ public class MainActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        if (Objects.equals(deverror, "wrongtoken")) {
-                            logOut();
-                        }
                         return;
                     }
                 }
