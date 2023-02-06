@@ -55,16 +55,24 @@ public class ProfileActivity extends AppCompatActivity {
         user_data = new ArrayList<Pair>();
         Pair<String, String> item_tuple_file = new Pair<String, String>("Legajo", SessionPrefs.get(this).getFile());
         user_data.add(item_tuple_file);
-        Pair<String, String> item_tuple_dni = new Pair<String, String>("DNI", SessionPrefs.get(this).getDni());
-        user_data.add(item_tuple_dni);
+        if (SessionPrefs.get(this).getDni() != "") {
+            Pair<String, String> item_tuple_dni = new Pair<String, String>("DNI", SessionPrefs.get(this).getDni());
+            user_data.add(item_tuple_dni);
+        }
         Pair<String, String> item_tuple_mail = new Pair<String, String>("Correo", SessionPrefs.get(this).getMail());
         user_data.add(item_tuple_mail);
-        Pair<String, String> item_tuple_address = new Pair<String, String>("Dirección", SessionPrefs.get(this).getAddress());
-        user_data.add(item_tuple_address);
-        Pair<String, String> item_tuple_city = new Pair<String, String>("Ciudad", SessionPrefs.get(this).getCity());
-        user_data.add(item_tuple_city);
-        Pair<String, String> item_tuple_phone = new Pair<String, String>("Teléfono", SessionPrefs.get(this).getPhone());
-        user_data.add(item_tuple_phone);
+        if (SessionPrefs.get(this).getAddress() != "") {
+            Pair<String, String> item_tuple_address = new Pair<String, String>("Dirección", SessionPrefs.get(this).getAddress());
+            user_data.add(item_tuple_address);
+        }
+        if (SessionPrefs.get(this).getCity() != "") {
+            Pair<String, String> item_tuple_city = new Pair<String, String>("Ciudad", SessionPrefs.get(this).getCity());
+            user_data.add(item_tuple_city);
+        }
+        if (SessionPrefs.get(this).getPhone() != "") {
+            Pair<String, String> item_tuple_phone = new Pair<String, String>("Teléfono", SessionPrefs.get(this).getPhone());
+            user_data.add(item_tuple_phone);
+        }
 
         // Armamos el listado
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, user_data) {
