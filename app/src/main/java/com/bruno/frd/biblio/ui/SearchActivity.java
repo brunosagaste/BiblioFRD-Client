@@ -202,7 +202,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onFailure(Call<ApiSearchResponse> call, Throwable t) {
                 showLoadingIndicator(false);
                 Log.d(TAG, "Petición rechazada:" + t.getMessage());
-                showErrorMessage("Error de comunicación");
+                showErrorMessage("No hay conexión con el servidor");
             }
         });
     }

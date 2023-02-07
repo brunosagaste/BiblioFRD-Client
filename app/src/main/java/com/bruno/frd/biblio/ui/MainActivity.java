@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<ApiResponsePrestamos> call, Throwable t) {
                 showLoadingIndicator(false);
                 Log.d(TAG, "Petición rechazada:" + t.getMessage());
-                showErrorMessage("No hay conexión a internet");
+                showErrorMessage("No hay conexión con el servidor");
             }
         });
     }
@@ -520,8 +520,6 @@ public class MainActivity extends AppCompatActivity {
                                 .subtype()
                                 .equals("json")) {
                             ApiError apiError = ApiError.fromResponseBody(response.errorBody());
-                            //mFloatLabelUserId.setError(apiError.getMessage());
-                            //mFloatLabelUserId.requestFocus();
 
                             error = apiError.getMessage();
                             deverror = apiError.getDeveloperMessage();
@@ -536,8 +534,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         return;
                     }
-                }
-                catch(Exception e) {
+                } catch(Exception e) {
                     // Reportar el status code en caso de que el error no tenga body
                     Log.d(TAG, String.valueOf(response.code()));
                 }
@@ -559,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public InetAddress call() {
                     try {
-                        return InetAddress.getByName("google.com");
+                        return InetAddress.getByName("asus.lan");
                     } catch (UnknownHostException e) {
                         return null;
                     }
@@ -575,21 +572,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
+        // Al desloguarse mandamos un FCM Registration ID nulo al server para que no le sigan llegando notificaciones
         if (internetConnectionAvailable(500)) {
-            // Al desloguarse mandamos un FCM Registration ID nulo al server para que no le sigan llegando notificaciones
-            String deviceToken = null;
-            sendRegistrationToServer(deviceToken);
+            sendRegistrationToServer(null);
             SessionPrefs.get(this).logOut();
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-            CafeBar.builder(coordinatorLayout.getContext())
-                    .floating(true)
-                    .content("No hay conexión a internet")
-                    .to(coordinatorLayout)
-                    .neutralText("Aceptar")
-                    .duration(CafeBar.Duration.LONG)
-                    .show();
+            showErrorMessage("No hay conexión con el servidor");
             loadLoans(getCurrentState());
         }
     }
