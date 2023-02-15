@@ -1,5 +1,6 @@
 package com.bruno.frd.biblio.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -97,6 +98,7 @@ public class ItemActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String formatDate(Date date) {
         return new SimpleDateFormat("dd/MM/yyyy").format(date);
     }

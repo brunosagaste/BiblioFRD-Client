@@ -1,9 +1,11 @@
 package com.bruno.frd.biblio.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -71,6 +73,7 @@ public class PasswordActivity extends AppCompatActivity {
         oldpw = findViewById(R.id.oldpw);
         newpw = findViewById(R.id.new_pw);
         confpw = findViewById(R.id.confirm_pw);
+        oldpw_layout.requestFocus();
         Button mPassButton = findViewById(R.id.password_change_button);
         mPassButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,13 +82,6 @@ public class PasswordActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent myIntent = new Intent(getApplicationContext(), ProfileActivity.class);
-        startActivityForResult(myIntent, 0);
-        return true;
-    }*/
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -113,7 +109,7 @@ public class PasswordActivity extends AppCompatActivity {
                 try {
                     if (!response.isSuccessful()) {
                         // Procesar error de API
-                        String error = "Ha ocurrido un error. Contacte al administrador";
+                        String error = "Ha ocurrido un error. Contacte al administrador.";
                         String field = null;
                         if (response.errorBody()
                                 .contentType()
@@ -155,7 +151,6 @@ public class PasswordActivity extends AppCompatActivity {
                         }
                         return;
                     }
-
                     Log.d(TAG + " PassToken ", response.body().getToken());
                     Log.d(TAG, response.body().getMessage());
                     SessionPrefs.get(PasswordActivity.this).setToken(response.body().getToken());
@@ -164,8 +159,7 @@ public class PasswordActivity extends AppCompatActivity {
                     bundle.putSerializable("DATA", response.body().getMessage());
                     item_intent.putExtras(bundle);
                     startActivity(item_intent);
-                }
-                catch(Exception e) {
+                } catch(Exception e) {
                     Intent item_intent = new Intent(PasswordActivity.this, ProfileActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("DATA", "HTTP Error: " + String.valueOf(response.code()));

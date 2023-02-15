@@ -73,9 +73,9 @@
             android:id="@+id/copias_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/author_name"
-            android:layout_alignStart="@+id/author_name"
             android:layout_below="@+id/author_name"
+            android:layout_alignStart="@+id/author_name"
+            android:layout_alignLeft="@+id/author_name"
             android:ellipsize="end"
             android:maxLines="1"
             tools:text="0 copias disponibles" />

@@ -27,8 +27,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
         void onItemClick(SearchDisplayList clickedAppointment);
 
-        //void onRenewBook(SearchDisplayList canceledAppointment);
-
     }
 
     public SearchAdapter(Context context, List<SearchDisplayList> items) {
@@ -44,8 +42,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         mOnItemClickListener = onItemClickListener;
     }
 
-
-
     public void swapItems(List<SearchDisplayList> results) {
         if (results == null) {
             mItems = new ArrayList<>(0);
@@ -60,20 +56,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         SearchDisplayList book = mItems.get(position);
 
         View statusIndicator = holder.statusIndicator;
-
-        // estado: se colorea indicador según el estado
-        /*switch (appointment.getStatus()) {
-            case "ND":
-                // ocultar botón
-                //holder.cancelButton.setVisibility(View.GONE);
-                statusIndicator.setBackgroundResource(R.color.porvencerStatus);
-                break;
-            case "D":
-                // mostrar botón
-                //holder.cancelButton.setVisibility(View.GONE);
-                statusIndicator.setBackgroundResource(R.color.vencidaStatus);
-                break;
-        }*/
 
         String cText;
         if (book.getCopyFree() == 1) {
@@ -103,8 +85,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title;
         public TextView author;
-        public TextView topic2;
-        public TextView bibid;
         public TextView copyFree;
         public View statusIndicator;
 
@@ -112,8 +92,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             super(itemView);
 
             statusIndicator = itemView.findViewById(R.id.indicator_book_status);
-            //topic2 = (TextView) itemView.findViewById(R.id.book_info);
-            //bibid = (TextView) itemView.findViewById(R.id.text_medical_service);
             title = (TextView) itemView.findViewById(R.id.book_name);
             author = (TextView) itemView.findViewById(R.id.author_name);
             copyFree = (TextView) itemView.findViewById(R.id.book_info);

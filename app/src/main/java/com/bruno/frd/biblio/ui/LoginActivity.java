@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         // Procesar errores
                         if (!response.isSuccessful()) {
-                            String error = "Ha ocurrido un error. Contacte al administrador";
+                            String error = "Ha ocurrido un error. Contacte al administrador.";
                             if (response.errorBody()
                                     .contentType()
                                     .subtype()

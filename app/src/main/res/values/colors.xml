@@ -3,7 +3,7 @@
     <color name="colorPrimary">#76A6EF </color>
     <color name="colorPrimaryDark">#76A6EF </color>
     <color name="colorAccent">#ff4081</color>
-    <color name="vencidaStatus">#82c784</color>
-    <color name="porvencerStatus">#e57373</color>
+    <color name="notoverdue">#82c784</color>
+    <color name="overdue">#e57373</color>
     <color name="buscador">#ff4081</color>
 </resources>

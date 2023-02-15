@@ -1,5 +1,6 @@
 package com.bruno.frd.biblio.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
@@ -66,7 +67,7 @@ public class SearchItemActivity extends AppCompatActivity {
         Pair<String, String> item_tuple_bibid = new Pair<String, String>("Número de libro", Integer.toString(clickedItem.getBibid()));;
         item_data.add(item_tuple_bibid);
         if (clickedItem.getDueBackDt() != null) {
-            Pair<String, String> item_tuple_due_back_dt = new Pair<String, String>("Devolución más cercana", (String) DateFormat.format("dd-MM-yyyy", clickedItem.getDueBackDt()));
+            Pair<String, String> item_tuple_due_back_dt = new Pair<String, String>("Devolución más cercana", formatDate(clickedItem.getDueBackDt()));
             item_data.add(item_tuple_due_back_dt);
         }
 
@@ -96,6 +97,7 @@ public class SearchItemActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String formatDate(Date date) {
         return new SimpleDateFormat("dd/MM/yyyy").format(date);
     }

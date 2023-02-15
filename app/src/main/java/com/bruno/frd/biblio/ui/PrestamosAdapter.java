@@ -69,19 +69,19 @@ public class PrestamosAdapter extends RecyclerView.Adapter<PrestamosAdapter.View
                 // mostrar botón
                 holder.renewButton.setVisibility(View.VISIBLE);
                 holder.status.setVisibility(View.GONE);
-                statusIndicator.setBackgroundResource(R.color.vencidaStatus);
+                statusIndicator.setBackgroundResource(R.color.notoverdue);
                 break;
             case "overdue":
                 // ocultar botón
                 holder.renewButton.setVisibility(View.GONE);
                 holder.status.setVisibility(View.VISIBLE);
-                statusIndicator.setBackgroundResource(R.color.porvencerStatus);
+                statusIndicator.setBackgroundResource(R.color.overdue);
                 break;
             case "nonrenewable":
                 //  ocultar botón
                 holder.renewButton.setVisibility(View.GONE);
                 holder.status.setVisibility(View.VISIBLE);
-                statusIndicator.setBackgroundResource(R.color.vencidaStatus);
+                statusIndicator.setBackgroundResource(R.color.notoverdue);
                 break;
         }
 
