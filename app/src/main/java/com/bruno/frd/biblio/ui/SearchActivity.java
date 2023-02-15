@@ -150,7 +150,7 @@ public class SearchActivity extends AppCompatActivity {
                 try {
                     if (!response.isSuccessful()) {
                         // Procesar error de API
-                        String error = "Ha ocurrido un error. Contacte al administrador";
+                        String error = "Ha ocurrido un error. Contacte al administrador.";
                         String deverror = null;
                         if (response.errorBody()
                                 .contentType()
